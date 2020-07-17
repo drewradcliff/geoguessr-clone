@@ -10,4 +10,4 @@ Using [Google Maps Platform](https://cloud.google.com/maps-platform)
 - [x] Add street view and maps to page
 - [ ] Get locations list
 - [x] Add select pin location
-- [ ] Calculate distance from pin to street view position
+- [x] Calculate distance from pin to street view position

@@ -5,10 +5,22 @@ body {
   padding: 0;
 }
 
+#wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  text-align: center;
+}
+
 #street-view {
   height: 50%;
 }
 
 #map {
   height: 50%;
+}
+
+#guessButton {
+  position: absolute;
+  bottom: 20px;
 }
