@@ -9,7 +9,7 @@ body {
   height: 100%;
   width: 100%;
   position: relative;
-  text-align: center;
+  /* text-align: center; */
 }
 
 #street-view {
@@ -22,5 +22,13 @@ body {
 
 #guessButton {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
+  left: 25px;
+  color: white;
+  background-color: lightgreen;
+  border: 1px solid white;
+  border-radius: 4px;
+  height: 3rem;
+  font-size: 24px;
+  font-weight: bold;
 }

@@ -3,24 +3,19 @@ script.src = `https://maps.googleapis.com/maps/api/js?key=${config.API_KEY}&call
 script.defer = true;
 script.async = true;
 
-// const locations = [{ lat: 37.86926, lng: -122.254811 }];
+let panorama;
 let map;
-let rng = Math.floor(Math.random() * Math.floor(11));
-let streetViewCoordinates = locations[rng];
+let streetViewCoordinates;
 
 window.initialize = () => {
-  const panorama = new google.maps.StreetViewPanorama(
-    document.getElementById("street-view"),
-    {
-      position: streetViewCoordinates,
-      pov: { heading: 165, pitch: 0 },
-      zoom: 1,
-      disableDefaultUI: true,
-    }
+  panorama = new google.maps.StreetViewPanorama(
+    document.getElementById("street-view")
   );
+  tryLocation(handleCallback);
+
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 0, lng: 0 },
-    zoom: 3,
+    zoom: 2,
     streetViewControl: false,
   });
 
@@ -28,8 +23,34 @@ window.initialize = () => {
     addGuessMarker(e.latLng, map);
   });
 };
-
 document.head.appendChild(script);
+
+const tryLocation = (callback) => {
+  const sv = new google.maps.StreetViewService();
+  sv.getPanorama(
+    {
+      location: getRandomCoordinates(),
+      radius: 50000,
+    },
+    callback
+  );
+};
+
+const handleCallback = (data, status) => {
+  if (status === "OK") {
+    panorama.setPano(data.location.pano);
+    panorama.setPov({
+      heading: 270,
+      pitch: 0,
+    });
+    panorama.setOptions({
+      disableDefaultUI: true,
+    });
+    panorama.setVisible(true);
+  } else {
+    tryLocation(handleCallback);
+  }
+};
 
 let marker = undefined;
 const addGuessMarker = (latLng, map) => {
@@ -48,7 +69,7 @@ const addGuessMarker = (latLng, map) => {
 
 const addButton = () => {
   let guessButton = document.createElement("button");
-  guessButton.textContent = "Guess";
+  guessButton.textContent = "Choose Location";
   guessButton.id = "guessButton";
   guessButton.onclick = addStreetViewMarker;
   let div = document.querySelector("#wrapper");
@@ -58,7 +79,7 @@ const addButton = () => {
 let streetViewMarker;
 const addStreetViewMarker = () => {
   streetViewMarker = new google.maps.Marker({
-    position: streetViewCoordinates,
+    position: panorama.location.latLng,
     map: map,
   });
   // TODO: map.panTo(latLng);
@@ -95,3 +116,7 @@ function calculateDistance(mk1, mk2) {
   console.log(d);
   return d;
 }
+
+const getRandomCoordinates = () => {
+  return { lat: Math.random() * 180 - 90, lng: Math.random() * 360 - 180 };
+};
