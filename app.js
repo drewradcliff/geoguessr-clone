@@ -3,10 +3,10 @@ script.src = `https://maps.googleapis.com/maps/api/js?key=${config.API_KEY}&call
 script.defer = true;
 script.async = true;
 
-const locations = [{ lat: 37.86926, lng: -122.254811 }];
+// const locations = [{ lat: 37.86926, lng: -122.254811 }];
 let map;
-let markerCoordinates;
-let streetViewCoordinates = locations[0];
+let rng = Math.floor(Math.random() * Math.floor(11));
+let streetViewCoordinates = locations[rng];
 
 window.initialize = () => {
   const panorama = new google.maps.StreetViewPanorama(
@@ -15,6 +15,7 @@ window.initialize = () => {
       position: streetViewCoordinates,
       pov: { heading: 165, pitch: 0 },
       zoom: 1,
+      disableDefaultUI: true,
     }
   );
   map = new google.maps.Map(document.getElementById("map"), {
@@ -60,7 +61,7 @@ const addStreetViewMarker = () => {
     position: streetViewCoordinates,
     map: map,
   });
-  // map.panTo(latLng);
+  // TODO: map.panTo(latLng);
   drawPolyLine(marker, streetViewMarker);
   calculateDistance(marker, streetViewMarker);
 };
